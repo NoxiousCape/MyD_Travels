@@ -43,4 +43,64 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
         observer.observe(el);
     });
+
+    // Tab Logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => {
+                c.style.display = 'none';
+                c.classList.remove('active');
+            });
+
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            // Show corresponding content
+            const tabId = btn.getAttribute('data-tab');
+            const content = document.getElementById(tabId);
+            content.style.display = 'grid'; // Restore grid layout
+            setTimeout(() => content.classList.add('active'), 10); // Small delay for fade-in if needed
+        });
+    });
+
+    // Budget Recommender Logic
+    const budgetBtn = document.getElementById('budgetBtn');
+    const budgetInput = document.getElementById('budgetInput');
+    const budgetResult = document.getElementById('budgetResult');
+
+    budgetBtn.addEventListener('click', () => {
+        const budget = parseInt(budgetInput.value);
+
+        if (!budget || budget <= 0) {
+            alert('Por favor ingresa un presupuesto válido.');
+            return;
+        }
+
+        let recommendation = '';
+        let destinations = [];
+
+        // Simple logic for recommendation
+        if (budget < 1000000) {
+            destinations = ['Eje Cafetero', 'Medellín'];
+            recommendation = 'Con ese presupuesto, te recomendamos explorar las maravillas de Colombia por tierra.';
+        } else if (budget >= 1000000 && budget < 4000000) {
+            destinations = ['Cartagena', 'San Andrés', 'Bolivia', 'Perú'];
+            recommendation = '¡Tienes excelentes opciones! Desde playas caribeñas hasta la magia de los Andes.';
+        } else {
+            destinations = ['Brasil', 'Argentina', 'Corea del Sur'];
+            recommendation = '¡El mundo es tuyo! Puedes aspirar a grandes viajes internacionales.';
+        }
+
+        budgetResult.innerHTML = `
+            <h3>${recommendation}</h3>
+            <p>Destinos sugeridos: <strong>${destinations.join(', ')}</strong></p>
+            <a href="#destinos" class="btn btn-secondary" style="margin-top: 1rem; font-size: 0.9rem;">Ver Detalles</a>
+        `;
+        budgetResult.style.display = 'block';
+    });
 });

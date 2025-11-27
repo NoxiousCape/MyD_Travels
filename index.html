@@ -26,6 +26,7 @@
                     <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#nosotros">Nosotros</a></li>
                     <li><a href="#destinos">Destinos</a></li>
+                    <li><a href="#presupuesto">Presupuesto</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
                 <a href="#contacto" class="btn btn-primary">Reserva Ahora</a>
@@ -50,7 +51,6 @@
         <div class="container">
             <div class="about-grid">
                 <div class="about-image">
-                    <!-- Placeholder for a couple image or travel image -->
                     <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                         alt="Equipo M&D"
                         style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
@@ -86,40 +86,187 @@
     <!-- Destinations Section -->
     <section id="destinos" class="destinations">
         <div class="container">
-            <h2 class="section-title">Destinos Populares</h2>
-            <div class="destinations-grid">
-                <!-- Destination 1 -->
-                <div class="destination-card">
+            <h2 class="section-title">Nuestros Destinos</h2>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="nacionales">Nacionales</button>
+                    <button class="tab-btn" data-tab="internacionales">Internacionales</button>
+                </div>
+            </div>
+
+            <!-- Nacionales -->
+            <div id="nacionales" class="destinations-grid tab-content active">
+                <!-- Cartagena -->
+                <div class="destination-card" data-price="1500000">
                     <div class="card-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                    </div>
-                    <div class="card-content">
-                        <h3>Playas del Caribe</h3>
-                        <p>Relájate en las aguas cristalinas y arena blanca. El paraíso te espera.</p>
-                        <span class="price">Desde $1,200,000 COP</span>
+                        style="background-image: url('https://images.unsplash.com/photo-1583531352515-8884af319dc1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                            <i class="fas fa-bus" title="Terrestre"></i>
+                        </div>
                     </div>
                 </div>
-                <!-- Destination 2 -->
-                <div class="destination-card">
+                <!-- San Andrés -->
+                <div class="destination-card" data-price="1800000">
                     <div class="card-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        style="background-image: url('https://images.unsplash.com/photo-1715559501246-ffe8df3a8a5f?fm=jpg&q=60&w=800&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2FuJTIwYW5kcmVzJTIwY29sb21iaWF8ZW58MHx8MHx8fDA%3D');">
+                        <div class="transport-badges">
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
                     </div>
                     <div class="card-content">
-                        <h3>Tour por Europa</h3>
-                        <p>Descubre la historia y cultura del viejo continente en un viaje inolvidable.</p>
-                        <span class="price">Desde $5,500,000 COP</span>
+                        <h3>San Andrés</h3>
+                        <p>El mar de los siete colores te espera.</p>
+                        <span class="price">Desde $1,800,000 COP</span>
                     </div>
                 </div>
-                <!-- Destination 3 -->
-                <div class="destination-card">
+                <!-- Eje Cafetero -->
+                <div class="destination-card" data-price="800000">
                     <div class="card-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1540206351-d6465b3ac5c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        style="background-image: url('https://images.unsplash.com/photo-1672851612770-f969b3efc02d?fm=jpg&q=60&w=800&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dmFsbGUlMjBkZWwlMjBjb2NvcmF8ZW58MHx8MHx8fDA%3D');">
+                        <div class="transport-badges">
+                            <i class="fas fa-bus" title="Terrestre"></i>
+                        </div>
                     </div>
                     <div class="card-content">
-                        <h3>Aventura en la Amazonía</h3>
-                        <p>Conecta con la naturaleza en el pulmón del mundo. Una experiencia única.</p>
+                        <h3>Eje Cafetero</h3>
+                        <p>Cultura, café y paisajes verdes infinitos.</p>
+                        <span class="price">Desde $800,000 COP</span>
+                    </div>
+                </div>
+                <!-- Medellín -->
+                <div class="destination-card" data-price="900000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1716958651028-e178fec51912?fm=jpg&q=60&w=800&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWVkZWxsaW4lMjBjb2xvbWJpYXxlbnwwfHwwfHx8MA%3D%3D');">
+                        <div class="transport-badges">
+                            <i class="fas fa-bus" title="Terrestre"></i>
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Medellín</h3>
+                        <p>La ciudad de la eterna primavera.</p>
                         <span class="price">Desde $900,000 COP</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- Internacionales -->
+            <div id="internacionales" class="destinations-grid tab-content" style="display: none;">
+                <!-- Brasil -->
+                <div class="destination-card" data-price="4500000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Brasil</h3>
+                        <p>Samba, playas y la majestuosa Amazonía.</p>
+                        <span class="price">Desde $4,500,000 COP</span>
+                    </div>
+                </div>
+                <!-- Argentina -->
+                <div class="destination-card" data-price="5000000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1589909202802-8f4aadce1849?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Argentina</h3>
+                        <p>Tango, asados y la belleza de la Patagonia.</p>
+                        <span class="price">Desde $5,000,000 COP</span>
+                    </div>
+                </div>
+                <!-- Corea del Sur -->
+                <div class="destination-card" data-price="12000000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1538485399081-7191377e8241?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Corea del Sur</h3>
+                        <p>Tradición milenaria y modernidad vibrante.</p>
+                        <span class="price">Desde $12,000,000 COP</span>
+                    </div>
+                </div>
+                <!-- Bolivia -->
+                <div class="destination-card" data-price="3500000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1534234828563-02511c75975b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-bus" title="Terrestre"></i>
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bolivia</h3>
+                        <p>El espejo del mundo en el Salar de Uyuni.</p>
+                        <span class="price">Desde $3,500,000 COP</span>
+                    </div>
+                </div>
+                <!-- Perú -->
+                <div class="destination-card" data-price="3800000">
+                    <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="transport-badges">
+                            <i class="fas fa-bus" title="Terrestre"></i>
+                            <i class="fas fa-plane" title="Aéreo"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Perú</h3>
+                        <p>Gastronomía mundial y la magia de los Incas.</p>
+                        <span class="price">Desde $3,800,000 COP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Recommender Section -->
+    <section id="presupuesto" class="budget-section">
+        <div class="container">
+            <div class="budget-content">
+                <h2>¿No sabes a dónde ir?</h2>
+                <p>Dinos tu presupuesto y te recomendaremos la mejor opción para ti.</p>
+                <div class="budget-form">
+                    <input type="number" id="budgetInput" placeholder="Ingresa tu presupuesto en COP" min="0">
+                    <button id="budgetBtn" class="btn btn-primary">Recomendar Destino</button>
+                </div>
+                <div id="budgetResult" class="budget-result" style="display: none;">
+                    <!-- Result will be injected here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">¿Por qué viajar con nosotros?</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-user-check"></i>
+                    <h3>Atención Personalizada</h3>
+                    <p>Diseñamos cada detalle de tu viaje según tus gustos y necesidades.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Soporte 24/7</h3>
+                    <p>Estamos contigo antes, durante y después de tu viaje para cualquier eventualidad.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-tags"></i>
+                    <h3>Mejores Precios</h3>
+                    <p>Alianzas estratégicas para ofrecerte las tarifas más competitivas del mercado.</p>
                 </div>
             </div>
         </div>
