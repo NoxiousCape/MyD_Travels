@@ -1,71 +1,87 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
 const app = express();
 const PORT = 3000;
+
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // Serve static files from the current directory
 app.use(express.static(__dirname));
 
-// Database of destinations
-const destinations = [
+// Fallback destinations in case API fails
+const fallbackDestinations = [
     { name: 'Eje Cafetero', minPrice: 800000, type: 'Nacional', description: 'Cultura, café y paisajes verdes infinitos.' },
     { name: 'Medellín', minPrice: 900000, type: 'Nacional', description: 'La ciudad de la eterna primavera.' },
-    { name: 'Cartagena', minPrice: 1500000, type: 'Nacional', description: 'Historia, murallas y playas de ensueño.' },
-    { name: 'Santa Marta', minPrice: 1300000, type: 'Nacional', description: 'Sierra Nevada y playas cristalinas.' },
-    { name: 'San Andrés', minPrice: 1800000, type: 'Nacional', description: 'El mar de los siete colores.' },
-    { name: 'Amazonas', minPrice: 2000000, type: 'Nacional', description: 'Conexión total con la naturaleza.' },
-    { name: 'Bolivia', minPrice: 3500000, type: 'Internacional', description: 'El espejo del mundo en el Salar de Uyuni.' },
-    { name: 'Perú', minPrice: 3800000, type: 'Internacional', description: 'Gastronomía mundial y la magia de los Incas.' },
-    { name: 'México', minPrice: 4200000, type: 'Internacional', description: 'Cultura vibrante, tacos y playas.' },
-    { name: 'Brasil', minPrice: 4500000, type: 'Internacional', description: 'Samba, playas y la majestuosa Amazonía.' },
-    { name: 'Argentina', minPrice: 5000000, type: 'Internacional', description: 'Tango, asados y la belleza de la Patagonia.' },
-    { name: 'Chile', minPrice: 5500000, type: 'Internacional', description: 'Vinos, desiertos y glaciares.' },
-    { name: 'España', minPrice: 8000000, type: 'Internacional', description: 'Puerta de entrada a Europa.' },
-    { name: 'Corea del Sur', minPrice: 12000000, type: 'Internacional', description: 'Tradición milenaria y modernidad vibrante.' },
-    { name: 'Japón', minPrice: 15000000, type: 'Internacional', description: 'Tecnología, templos y sushi.' }
+    { name: 'Cartagena', minPrice: 1500000, type: 'Nacional', description: 'Historia, murallas y playas de ensueño.' }
 ];
 
 // API Endpoint for recommendations
-app.get('/api/recommend', (req, res) => {
+app.get('/api/recommend', async (req, res) => {
     const budget = parseInt(req.query.budget);
 
-    // Simulate network delay for "searching" effect
-    setTimeout(() => {
-        if (!budget || isNaN(budget)) {
-            return res.status(400).json({ error: 'Presupuesto inválido' });
-        }
+    if (!budget || isNaN(budget)) {
+        return res.status(400).json({ error: 'Presupuesto inválido' });
+    }
 
-        if (budget < 200000) {
-            return res.json({
-                success: false,
-                message: 'Lastimosamente el presupuesto es bajo para nuestros paquetes actuales. ¡Sigue ahorrando para tu próxima aventura!'
-            });
-        }
+    // Updated minimum budget to 300,000 COP
+    if (budget < 300000) {
+        return res.json({
+            success: false,
+            message: 'Lastimosamente el presupuesto es bajo para nuestros paquetes actuales (Mínimo $300.000 COP). ¡Sigue ahorrando para tu próxima aventura!'
+        });
+    }
 
-        // Filter destinations within budget
-        // We show destinations where budget >= minPrice
-        // We sort by price descending to show the "best" options first (closest to budget)
-        const affordableDestinations = destinations
-            .filter(d => budget >= d.minPrice)
-            .sort((a, b) => b.minPrice - a.minPrice);
+    try {
+        console.log(`Asking Gemini for recommendations with budget: ${budget}`);
+        const prompt = `
+            Actúa como un experto agente de viajes en Colombia.
+            El usuario tiene un presupuesto de $${budget} COP.
+            Recomienda 3 destinos turísticos (ciudades o regiones) que sean accesibles con ese presupuesto aproximado (incluyendo transporte y estadía básica).
+            Pueden ser destinos nacionales (Colombia) o internacionales si el presupuesto es alto (> 4.000.000 COP).
+            Prioriza destinos interesantes y variados (ej: si es bajo presupuesto: pueblos cercanos, si es alto: países).
+            
+            IMPORTANTE: Responde ÚNICAMENTE con un arreglo JSON válido. No uses Markdown. No uses bloques de código.
+            El formato debe ser estrictamente así:
+            [
+                { "name": "Nombre Destino", "type": "Nacional" o "Internacional", "minPrice": precio_estimado_numero, "description": "Breve descripción atractiva" }
+            ]
+        `;
 
-        if (affordableDestinations.length === 0) {
-            return res.json({
-                success: false,
-                message: 'Tu presupuesto es un buen inicio, pero nuestros paquetes comienzan desde $800,000 COP. ¡Estás cerca!'
-            });
-        }
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        let text = response.text();
+        console.log('Gemini Raw Response:', text);
 
-        // Pick top 3 recommendations
-        const topRecommendations = affordableDestinations.slice(0, 3);
+        // Clean up markdown code blocks if present
+        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+        const recommendations = JSON.parse(text);
 
         res.json({
             success: true,
-            message: `Con tu presupuesto de $${budget.toLocaleString('es-CO')} COP, podrías viajar a:`,
-            data: topRecommendations
+            message: `Con tu presupuesto de $${budget.toLocaleString('es-CO')} COP, la IA te recomienda:`,
+            data: recommendations
         });
 
-    }, 1500); // 1.5 second delay
+    } catch (error) {
+        console.error('Error calling Gemini:', error);
+        if (error.response) {
+            console.error('API Response Error:', JSON.stringify(error.response, null, 2));
+        }
+
+        // Fallback to local logic if AI fails
+        const affordable = fallbackDestinations.filter(d => budget >= d.minPrice);
+        res.json({
+            success: true,
+            message: `(Modo Offline - Error IA) Con tu presupuesto de $${budget.toLocaleString('es-CO')} COP, podrías viajar a:`,
+            data: affordable.length > 0 ? affordable : fallbackDestinations.slice(0, 1)
+        });
+    }
 });
 
 app.listen(PORT, () => {
