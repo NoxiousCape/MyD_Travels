@@ -8,7 +8,7 @@ const PORT = 3000;
 
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 // Serve static files from the current directory
 app.use(express.static(__dirname));
@@ -64,7 +64,7 @@ app.get('/api/recommend', async (req, res) => {
 
         res.json({
             success: true,
-            message: `Con tu presupuesto de $${budget.toLocaleString('es-CO')} COP, la IA te recomienda:`,
+            message: `Con tu presupuesto de $${budget.toLocaleString('es-CO')} COP, te recomendamos:`,
             data: recommendations
         });
 
