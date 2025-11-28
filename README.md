@@ -2,14 +2,18 @@
 
 Sitio web moderno y atractivo para la agencia de viajes **M&D Travels**, fundada por Daniel Steven Páez Zamudio y Dora Marcela Rincón Acevedo.
 
-![M&D Travels](https://img.shields.io/badge/Version-1.0.0-blue)
+![M&D Travels](https://img.shields.io/badge/Version-1.1.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
 
 ## 📋 Descripción
 
-M&D Travels es una agencia de viajes que ofrece experiencias inolvidables tanto en destinos nacionales como internacionales. Este sitio web presenta una interfaz moderna, intuitiva y completamente responsiva para que los usuarios puedan explorar destinos, calcular presupuestos y contactar con la agencia.
+M&D Travels es una agencia de viajes que ofrece experiencias inolvidables tanto en destinos nacionales como internacionales. Este sitio web presenta una interfaz moderna, intuitiva y completamente responsiva.
+
+**Novedad v1.1.0**: Ahora cuenta con un **backend en Node.js** que potencia el sistema de recomendaciones de viaje, ofreciendo una experiencia más dinámica y realista.
 
 ## ✨ Características
 
@@ -27,23 +31,11 @@ M&D Travels es una agencia de viajes que ofrece experiencias inolvidables tanto 
 - **Iconos de transporte**: Indicadores visuales (avión, bus, crucero)
 - **Información de precios**: Precios desde para cada destino
 
-#### Destinos Nacionales
-- Cartagena
-- San Andrés
-- Eje Cafetero (Valle del Cocora)
-- Medellín
-
-#### Destinos Internacionales
-- Brasil
-- Argentina
-- Corea del Sur
-- Bolivia (Salar de Uyuni)
-- Perú
-
-#### Recomendador de Presupuesto
-- **Calculadora inteligente**: Ingresa tu presupuesto y obtén recomendaciones personalizadas
-- **Filtrado automático**: Sugiere destinos según el rango de precio
-- **Interfaz intuitiva**: Resultados visuales con tarjetas de destinos
+#### Recomendador de Presupuesto (Backend Powered)
+- **API REST**: Conexión a un servidor Node.js/Express
+- **Búsqueda Inteligente**: Filtra destinos basándose en el presupuesto real
+- **Validación**: Manejo de presupuestos bajos con mensajes amigables
+- **Simulación**: Efecto de "búsqueda en tiempo real"
 
 #### Sección "Por qué viajar con nosotros"
 - Atención personalizada
@@ -53,33 +45,34 @@ M&D Travels es una agencia de viajes que ofrece experiencias inolvidables tanto 
 #### Formulario de Contacto
 - Campos para nombre, email y mensaje
 - Diseño limpio y accesible
-- Validación de formulario
 
 ## 🚀 Tecnologías Utilizadas
 
-- **HTML5**: Estructura semántica
-- **CSS3**: Estilos modernos con variables CSS, Flexbox y Grid
-- **JavaScript (Vanilla)**: Funcionalidad interactiva sin dependencias
-- **Font Awesome 6.0**: Iconografía
-- **Google Fonts**: Tipografía Outfit
-- **Unsplash**: Imágenes de alta calidad
+- **Frontend**:
+    - HTML5, CSS3, JavaScript (Vanilla)
+    - Font Awesome 6.0, Google Fonts
+- **Backend**:
+    - **Node.js**: Entorno de ejecución
+    - **Express**: Framework web para la API
 
 ## 📁 Estructura del Proyecto
 
 ```
 M&D Travels/
 │
+├── server.js           # Servidor Backend (API)
+├── package.json        # Dependencias (Express)
 ├── index.html          # Página principal
 ├── style.css           # Estilos globales
-├── script.js           # Lógica de interacción
+├── script.js           # Lógica de interacción (Fetch API)
 └── README.md           # Este archivo
 ```
 
 ## 🛠️ Instalación y Uso
 
 ### Requisitos Previos
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
-- Conexión a internet (para cargar fuentes e iconos externos)
+- **Node.js** instalado (v14 o superior)
+- Navegador web moderno
 
 ### Pasos para Ejecutar
 
@@ -89,71 +82,37 @@ M&D Travels/
    cd "M&D Travels"
    ```
 
-2. **Abrir el proyecto**
-   - Simplemente abre el archivo `index.html` en tu navegador preferido
-   - O usa un servidor local como Live Server en VS Code
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
 
-3. **¡Listo!**
-   - El sitio debería cargarse completamente funcional
+3. **Iniciar el servidor**
+   ```bash
+   node server.js
+   # O también:
+   npm start
+   ```
+   Verás el mensaje: `Server running at http://localhost:3000`
 
-## 🎯 Funcionalidades JavaScript
+4. **Abrir la aplicación**
+   - Abre tu navegador y ve a: **[http://localhost:3000](http://localhost:3000)**
 
-### Tabs de Destinos
-```javascript
-// Cambio entre destinos nacionales e internacionales
-document.querySelectorAll('.tab-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        // Lógica de cambio de tabs
-    });
-});
-```
+## � API Endpoints
 
-### Recomendador de Presupuesto
-```javascript
-// Filtra destinos según el presupuesto ingresado
-budgetBtn.addEventListener('click', () => {
-    const budget = parseInt(budgetInput.value);
-    // Encuentra destinos dentro del rango
-});
-```
+### `GET /api/recommend`
+Obtiene recomendaciones de viaje basadas en un presupuesto.
 
-### Formulario de Contacto
-```javascript
-// Previene envío por defecto y muestra confirmación
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Lógica de envío
-});
-```
-
-## 🎨 Paleta de Colores
-
-```css
---primary-blue: #4A90E2;
---secondary-purple: #9B59B6;
---accent-yellow: #F39C12;
---text-dark: #2C3E50;
---text-light: #ECF0F1;
---bg-light: #F8F9FA;
-```
-
-## 📱 Responsividad
-
-El sitio está optimizado para:
-- **Desktop**: > 1024px
-- **Tablet**: 768px - 1024px
-- **Mobile**: < 768px
-
-## 🔮 Futuras Mejoras
-
-- [ ] Integración con API de reservas
-- [ ] Sistema de autenticación de usuarios
-- [ ] Blog de viajes
-- [ ] Galería de fotos de clientes
-- [ ] Integración con redes sociales
-- [ ] Sistema de reviews y calificaciones
-- [ ] Mapa interactivo de destinos
-- [ ] Chatbot de atención al cliente
+- **Parámetros**: `budget` (número)
+- **Ejemplo**: `/api/recommend?budget=2000000`
+- **Respuesta**:
+  ```json
+  {
+    "success": true,
+    "message": "Con tu presupuesto...",
+    "data": [ ... ]
+  }
+  ```
 
 ## 👥 Autores
 
@@ -164,10 +123,6 @@ El sitio está optimizado para:
 ## 📄 Licencia
 
 Este proyecto es propiedad de M&D Travels. Todos los derechos reservados © 2024
-
-## 📞 Contacto
-
-Para más información sobre nuestros servicios, visita nuestro sitio web o contáctanos a través del formulario de contacto.
 
 ---
 

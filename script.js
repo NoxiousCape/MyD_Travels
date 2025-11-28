@@ -81,26 +81,48 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let recommendation = '';
-        let destinations = [];
-
-        // Simple logic for recommendation
-        if (budget < 1000000) {
-            destinations = ['Eje Cafetero', 'Medellín'];
-            recommendation = 'Con ese presupuesto, te recomendamos explorar las maravillas de Colombia por tierra.';
-        } else if (budget >= 1000000 && budget < 4000000) {
-            destinations = ['Cartagena', 'San Andrés', 'Bolivia', 'Perú'];
-            recommendation = '¡Tienes excelentes opciones! Desde playas caribeñas hasta la magia de los Andes.';
-        } else {
-            destinations = ['Brasil', 'Argentina', 'Corea del Sur'];
-            recommendation = '¡El mundo es tuyo! Puedes aspirar a grandes viajes internacionales.';
-        }
-
-        budgetResult.innerHTML = `
-            <h3>${recommendation}</h3>
-            <p>Destinos sugeridos: <strong>${destinations.join(', ')}</strong></p>
-            <a href="#destinos" class="btn btn-secondary" style="margin-top: 1rem; font-size: 0.9rem;">Ver Detalles</a>
-        `;
+        // Show loading state
         budgetResult.style.display = 'block';
+        budgetResult.innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-blue);"></i>
+                <p style="margin-top: 1rem;">Buscando las mejores opciones para ti...</p>
+            </div>
+        `;
+
+        // Fetch recommendations from backend
+        fetch(`/api/recommend?budget=${budget}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const destinationsList = data.data.map(d =>
+                        `<li style="margin-bottom: 0.5rem;">
+                            <strong>${d.name}</strong> (${d.type}) - Desde $${d.minPrice.toLocaleString('es-CO')}
+                         </li>`
+                    ).join('');
+
+                    budgetResult.innerHTML = `
+                        <h3>${data.message}</h3>
+                        <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                            ${destinationsList}
+                        </ul>
+                        <a href="#destinos" class="btn btn-secondary" style="margin-top: 1rem; font-size: 0.9rem;">Ver Detalles</a>
+                    `;
+                } else {
+                    // Handle "Low Budget" or other specific messages from server
+                    budgetResult.innerHTML = `
+                        <div style="text-align: center;">
+                            <i class="fas fa-info-circle" style="font-size: 2rem; color: #e74c3c; margin-bottom: 1rem;"></i>
+                            <h3>${data.message}</h3>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                budgetResult.innerHTML = `
+                    <p style="color: red;">Hubo un error al conectar con el servidor. Por favor intenta más tarde.</p>
+                `;
+            });
     });
 });
