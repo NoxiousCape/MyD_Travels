@@ -28,8 +28,8 @@ app.get('/api/recommend', async (req, res) => {
         return res.status(400).json({ error: 'Presupuesto inválido' });
     }
 
-    // Updated minimum budget to 300,000 COP
-    if (budget < 300000) {
+    // Minimum budget
+    if (budget < 100000) {
         return res.json({
             success: false,
             message: 'Lastimosamente el presupuesto es bajo para nuestros paquetes actuales (Mínimo $300.000 COP). ¡Sigue ahorrando para tu próxima aventura!'
